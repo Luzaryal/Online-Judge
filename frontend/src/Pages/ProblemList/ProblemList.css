@@ -1,0 +1,21 @@
+/* ProblemList.css */
+.problem-list-container {
+    margin: 20px;
+    padding: 20px;
+  }
+  
+  .problem-item {
+    margin-bottom: 15px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+  
+  .problem-item h3 {
+    margin: 0 0 5px 0;
+  }
+  
+  .problem-item p {
+    margin: 0;
+  }
+  
