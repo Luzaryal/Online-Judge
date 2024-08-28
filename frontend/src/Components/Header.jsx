@@ -23,14 +23,13 @@ export default function Header() {
                         type='text'
                         placeholder='Search...'
                         rightIcon={AiOutlineSearch}
-                        className='w-80 border-gray-300 dark:border-gray-600'
+                        className='border-gray-300 dark:border-gray-600 hidden lg:inline'
                     />
-                    <Button className='w-12 h-10 absolute right-0 top-1/2 transform -translate-y-1/2' color='gray' pill>
+                </form>
+                   <Button className='w-10 h-10 absolute right-0 top-1/2 transform -translate-y-1/2 lg:hidden' color='gray' pill>
                         <AiOutlineSearch />
                     </Button>
-                </form>
             </div>
-
             <div className="flex items-center gap-4">
                 <Navbar.Toggle className='lg:hidden' />
                 <div className="hidden lg:flex items-center gap-4">
@@ -44,7 +43,7 @@ export default function Header() {
                         Problem List
                     </Link>
                 </div>
-                <Button className='w-12 h-10 hidden sm:inline' color='gray' pill>
+                <Button className='w-10 h-10 hidden sm:inline' color='gray' pill>
                     <FaMoon />
                 </Button>
                 <Link to='sign-in'>
