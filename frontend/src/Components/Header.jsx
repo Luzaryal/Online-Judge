@@ -47,7 +47,7 @@ export default function Header() {
                     <FaMoon />
                 </Button>
                 <Link to='sign-in'>
-                    <Button className='px-2 bg-gradient-to-r from-blue-900 to-red-900 rounded-lg text-white'>
+                    <Button className='px-2 bg-gradient-to-r from-purple-500 to-blue-400 rounded-lg'>
                         Sign In
                     </Button>
                 </Link>
