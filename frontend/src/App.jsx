@@ -7,6 +7,7 @@ import SignUp from './Pages/SignUp';
 import Dashboard from './Pages/Dashboard';
 import Header from './Components/Header';
 import ProblemList from './Pages/ProblemList';
+import Footer from './Components/Footer';
 
 
 function App() {
@@ -23,6 +24,7 @@ function App() {
       <Route path = "/dashboard" element={<Dashboard />} />
       <Route path ="/problem-list" element={<ProblemList />} />      
     </Routes>
+    <Footer />
 
     </BrowserRouter>
   );
