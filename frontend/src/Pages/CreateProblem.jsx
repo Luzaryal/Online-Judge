@@ -92,14 +92,14 @@ export default function CreateProblem() {
             />
           </div>
         <div>
-            <Label htmlFor='outputvalue'>Output Value:</Label>
+            <Label htmlFor='explanation'>Explanation:</Label>
             <Textarea 
               type='text' 
-              placeholder='Output Value' 
+              placeholder='Explanation' 
               required 
-              id='outputvalue' 
+              id='explanation' 
               className='flex-1' 
-              rows={3} 
+              rows={4} 
             />
           </div>
           <div className="flex flex-row justify-between">
