@@ -4,7 +4,6 @@ import { errorHandler } from "../utils/error.js"
 export const create = async (req, res, next) => {
 
     if (!req.user.isAdmin) {
-        console.log("here");
         return next(errorHandler(403, 'You Are Now Allowed To Create a Problem Statement'));
     }
     // if (!req.body.title || !req.body.difficulty || !req.body.description || !req.body.inputformat || !req.body.outputformat || !req.body.input || !req.body.inputvalue || !req.body.output || !req.body.explanation) {
