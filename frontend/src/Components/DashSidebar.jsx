@@ -49,9 +49,9 @@ export default function DashSidebar() {
                 </Sidebar.Item>
                 </Link>
                 {currentUser.isAdmin && (
-                <Link to='/dashboard?tab=problem'>
+                <Link to='/dashboard?tab=problems'>
                 <Sidebar.Item
-                active={tab === 'problem'}
+                active={tab === 'problems'}
                 icon={HiDocumentText}
                 as='div'>
                     Manage Problems 
