@@ -3,15 +3,46 @@ import { useNavigate } from 'react-router-dom';
 import React, { useState } from 'react';
 
 export default function CreateProblem() {
-  const [formData, setFormData] = useState({});
+  const [formData, setFormData] = useState({
+    title: '',
+    difficulty: '',
+    description: '',
+    inputformat: '',
+    outputformat: '',
+    testCases: [], // Array to hold multiple test cases
+  });
+
   const [submitError, setSubmitError] = useState(null);
-
   const navigate = useNavigate();
-  
-  // console.log(formData);
 
+  // Add a new empty test case to the array
+  const addTestCase = () => {
+    setFormData({
+      ...formData,
+      testCases: [
+        ...formData.testCases,
+        { input: '', output: '', explanation: '' } // New empty test case
+      ],
+    });
+  };
+
+  // Remove a test case by index
+  const removeTestCase = (index) => {
+    const updatedTestCases = formData.testCases.filter((_, i) => i !== index);
+    setFormData({ ...formData, testCases: updatedTestCases });
+  };
+
+  // Handle changes for each test case
+  const handleTestCaseChange = (index, field, value) => {
+    const updatedTestCases = [...formData.testCases];
+    updatedTestCases[index][field] = value;
+    setFormData({ ...formData, testCases: updatedTestCases });
+  };
+
+  // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
+    console.log(formData); // Log formData to see if all fields are correctly filled
     try {
       const res = await fetch('/api/problem/create', {
         method: 'POST',
@@ -30,148 +61,80 @@ export default function CreateProblem() {
         navigate('/problem-list');
       }
     } catch (error) {
-      setSubmitError('Something Went Wrong!');
+      setSubmitError('Something went wrong!');
     }
   };
+
   return (
     <div className='p-3 max-w-3xl mx-auto min-h-screen'>
       <h1 className='text-center text-3xl my-7 font-semibold'>Create a New Problem Statement</h1>
       <form className='flex flex-col gap-4' onSubmit={handleSubmit}>
-        <div className='flex flex-col gap-4 justify-between'>
-          <div>
-            <Label htmlFor='title'>Title:</Label>
-            <Textarea type='text' 
-            placeholder='Title' 
-            required id='title' 
-            className='flex-1' 
-            rows={3}
-            onChange={(e) =>
-              setFormData({ ...formData, title: e.target.value })
-            }
-            />
-          </div>
-          <div>
-            <Label htmlFor='difficulty'>Difficulty:</Label>
-            <Select id='difficulty'  onChange={(e) => setFormData({ ...formData, difficulty: e.target.value })}>
-              <option value='uncategorized'>Select Difficulty</option>
-              <option value='easy'>Easy</option>
-              <option value='medium'>Medium</option>
-              <option value='hard'>Hard</option>
-            </Select>
-          </div>
-        </div>
+        {/* Problem details (title, difficulty, etc.) */}
         <div className='flex flex-col gap-4'>
-          <div>
-            <Label htmlFor='description'>Description:</Label>
-            <Textarea 
-              type='text' 
-              placeholder='Description' 
-              required 
-              id='description' 
-              className='flex-1' 
-              rows={8} 
-              onChange={(e) =>
-              setFormData({ ...formData, description: e.target.value })
-              }
-            />
-          </div>
-          <div>
-            <Label htmlFor='inputformat'>Input Format:</Label>
-            <Textarea 
-              type='text' 
-              placeholder='Input Format' 
-              required 
-              id='inputformat' 
-              className='flex-1' 
-              rows={6}
-              onChange={(e) =>
-              setFormData({ ...formData, inputformat: e.target.value })
-              } 
-            />
-          </div>
-          <div>
-            <Label htmlFor='outputformat'>Output Format:</Label>
-            <Textarea 
-              type='text' 
-              placeholder='Output Format' 
-              required 
-              id='outputformat' 
-              className='flex-1' 
-              rows={6}
-              onChange={(e) =>
-              setFormData({ ...formData, outputformat: e.target.value })
-              } 
-            />
-          </div>
+          <Label htmlFor='title'>Title:</Label>
+          <Textarea id='title' rows={3} required placeholder='Title'
+            onChange={(e) => setFormData({ ...formData, title: e.target.value })}
+          />
+          
+          <Label htmlFor='difficulty'>Difficulty:</Label>
+          <Select id='difficulty' required
+            onChange={(e) => setFormData({ ...formData, difficulty: e.target.value })}>
+            <option value=''>Select Difficulty</option>
+            <option value='easy'>Easy</option>
+            <option value='medium'>Medium</option>
+            <option value='hard'>Hard</option>
+          </Select>
+
+          <Label htmlFor='description'>Description:</Label>
+          <Textarea id='description' rows={8} required placeholder='Description'
+            onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+          />
+
+          <Label htmlFor='inputformat'>Input Format:</Label>
+          <Textarea id='inputformat' rows={6} required placeholder='Input Format'
+            onChange={(e) => setFormData({ ...formData, inputformat: e.target.value })}
+          />
+
+          <Label htmlFor='outputformat'>Output Format:</Label>
+          <Textarea id='outputformat' rows={6} required placeholder='Output Format'
+            onChange={(e) => setFormData({ ...formData, outputformat: e.target.value })}
+          />
         </div>
+
+        {/* Test cases section */}
         <div className="flex flex-col gap-4">
-        <h3 className='text-2xl font-semibold'>Test Cases</h3>
-        <div>
-            <Label htmlFor='input'>Input:</Label>
-            <Textarea 
-              type='text' 
-              placeholder='Input' 
-              required 
-              id='input' 
-              className='flex-1' 
-              rows={3} 
-              onChange={(e) =>
-              setFormData({ ...formData, input: e.target.value })
-              }
-            />
-          </div>
-        <div>
-            <Label htmlFor='inputvalue'>Input Value:</Label>
-            <Textarea 
-              type='text' 
-              placeholder='Input Value' 
-              required 
-              id='inputvalue' 
-              className='flex-1' 
-              rows={3} 
-              onChange={(e) =>
-              setFormData({ ...formData, inputvalue: e.target.value })
-              }
-            />
-          </div>
-        <div>
-            <Label htmlFor='output'>Output:</Label>
-            <Textarea 
-              type='text' 
-              placeholder='Output' 
-              required 
-              id='output' 
-              className='flex-1' 
-              rows={3} 
-              onChange={(e) =>
-              setFormData({ ...formData, output: e.target.value })
-              }
-            />
-          </div>
-        <div>
-            <Label htmlFor='explanation'>Explanation:</Label>
-            <Textarea 
-              type='text' 
-              placeholder='Explanation' 
-              required 
-              id='explanation' 
-              className='flex-1' 
-              rows={4} 
-              onChange={(e) =>
-              setFormData({ ...formData, explanation: e.target.value })
-              }
-            />
-          </div>
-          <div className="flex flex-row justify-between">
-          <Button type='button' gradientMonochrome="teal">Add Test Case</Button>
-          <Button type='button' gradientMonochrome="teal">Remove Test Case</Button>
-          </div>
+          <h3 className='text-2xl font-semibold'>Test Cases</h3>
+          {formData.testCases.map((testCase, index) => (
+            <div key={index} className="border p-4 mb-4">
+              <h4 className="font-semibold">Test Case {index + 1}</h4>
+              <Label htmlFor={`input-${index}`}>Input:</Label>
+              <Textarea id={`input-${index}`} rows={3} placeholder='Input' required
+                value={testCase.input}
+                onChange={(e) => handleTestCaseChange(index, 'input', e.target.value)}
+              />
+              
+              <Label htmlFor={`output-${index}`}>Output:</Label>
+              <Textarea id={`output-${index}`} rows={3} placeholder='Output' required
+                value={testCase.output}
+                onChange={(e) => handleTestCaseChange(index, 'output', e.target.value)}
+              />
+
+              <Label htmlFor={`explanation-${index}`}>Explanation:</Label>
+              <Textarea id={`explanation-${index}`} rows={4} placeholder='Explanation'
+                value={testCase.explanation}
+                onChange={(e) => handleTestCaseChange(index, 'explanation', e.target.value)}
+              />
+
+              <Button color="failure" onClick={() => removeTestCase(index)}>Remove Test Case</Button>
+            </div>
+          ))}
+
+          <Button type='button' gradientMonochrome="teal" onClick={addTestCase}>Add Test Case</Button>
         </div>
+
         <Button type='submit' gradientMonochrome="purple">Add Problem</Button>
-        {
-          submitError && <Alert className='mt-5' color='failure'>{submitError}</Alert>
-        }
+        {submitError && <Alert className='mt-5' color='failure'>{submitError}</Alert>}
       </form>
     </div>
-  )
+  );
 }
