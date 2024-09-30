@@ -11,6 +11,7 @@ import Footer from './Components/Footer';
 import PrivateRoute from './Components/PrivateRoute';
 import OnlyAdminPrivateRoute from './Components/OnlyAdminPrivateRoute';
 import CreateProblem from './Pages/CreateProblem';
+import Leaderboard from './Pages/Leaderboard';
 
 
 function App() {
@@ -31,6 +32,7 @@ function App() {
       <Route path = "/create-problem" element={<CreateProblem />} />
       </Route>
       <Route path ="/problem-list" element={<ProblemList />} />      
+      <Route path ="/leaderboard" element={<Leaderboard />} />      
     </Routes>
     <Footer />
 

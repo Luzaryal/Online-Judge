@@ -104,6 +104,11 @@ export default function Header2() {
                          Problem List
                         </Link>
                     </Navbar.Link>
+                    <Navbar.Link active={path==='/leaderboard'} as={'div'}>
+                        <Link to='/leaderboard'>
+                         Leaderboard
+                        </Link>
+                    </Navbar.Link>
                 </Navbar.Collapse>
     </Navbar>
   );

@@ -2,7 +2,7 @@ import React from 'react'
 
 export default function ProblemList() {
   return (
-    <div>
+    <div className=' min-h-screen'>
       Problem List
     </div>
   )

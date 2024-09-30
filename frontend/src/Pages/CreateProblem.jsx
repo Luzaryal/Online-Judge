@@ -6,6 +6,7 @@ export default function CreateProblem() {
   const [formData, setFormData] = useState({
     title: '',
     difficulty: '',
+    category: '',
     description: '',
     inputformat: '',
     outputformat: '',
@@ -85,6 +86,10 @@ export default function CreateProblem() {
             <option value='hard'>Hard</option>
           </Select>
 
+          <Label htmlFor='category'>Category:</Label>
+          <Textarea id='category' rows={1} required placeholder='Category'
+            onChange={(e) => setFormData({ ...formData, category: e.target.value })}
+          />
           <Label htmlFor='description'>Description:</Label>
           <Textarea id='description' rows={8} required placeholder='Description'
             onChange={(e) => setFormData({ ...formData, description: e.target.value })}
