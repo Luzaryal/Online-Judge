@@ -12,12 +12,15 @@ import PrivateRoute from './Components/PrivateRoute';
 import OnlyAdminPrivateRoute from './Components/OnlyAdminPrivateRoute';
 import CreateProblem from './Pages/CreateProblem';
 import Leaderboard from './Pages/Leaderboard';
+import UpdateProblem from './Pages/UpdateProblem';
+import ProblemPage from './Pages/ProblemPage';
 
 
 function App() {
   const [count, setCount] = useState(0)
 
   return (
+    
     <BrowserRouter>
     <Header />
     <Routes>
@@ -30,9 +33,11 @@ function App() {
       </Route>
       <Route element={<OnlyAdminPrivateRoute />} >
       <Route path = "/create-problem" element={<CreateProblem />} />
+      <Route path = "/update-problem/:problemId" element={<UpdateProblem />} />
       </Route>
       <Route path ="/problem-list" element={<ProblemList />} />      
       <Route path ="/leaderboard" element={<Leaderboard />} />      
+      <Route path ="/problem/:problemSlug" element={<ProblemPage />} />      
     </Routes>
     <Footer />
 

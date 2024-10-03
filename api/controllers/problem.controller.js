@@ -32,13 +32,13 @@ export const getProblems = async (req, res, next) => {
         const sortDirection = req.query.order === 'asc' ? 1 : -1;
         const problems = await Problem.find({
             ...(req.query.userId && {userId: req.query.userId}),
-            ...(req.query.category && {userId: req.query.userId}),
-            ...(req.query.slug && {userId: req.query.slug}),
+            ...(req.query.category && {category: req.query.category}),
+            ...(req.query.slug && {slug: req.query.slug}),
             ...(req.query.problemId && {_id: req.query.problemId}),
             ...(req.query.searchTerm &&{
                 $or: [
                    { title: { $regex: req.query.searchTerm, $options: 'i' } },
-                   { content: { $regex: req.query.searchTerm, $options: 'i' } },
+                   { description: { $regex: req.query.searchTerm, $options: 'i' } },
                 ]
             }),
 
@@ -82,3 +82,30 @@ export const deleteproblem = async (req, res, next) => {
         next(error);
     }
 }
+export const updateproblem = async (req, res, next) => {
+    if (!req.user.isAdmin || req.user.id !== req.params.userId) {
+      return next(errorHandler(403, 'You Are Not Allowed to Update this Problem'));
+    }
+    try {
+      const updatedProblem = await Problem.findByIdAndUpdate(
+        req.params.problemId,
+        {
+          $set: {
+            title: req.body.title,
+            difficulty: req.body.difficulty,
+            category: req.body.category,
+            description: req.body.description,
+            inputformat: req.body.inputformat,
+            outputformat: req.body.outputformat,
+            testCases: req.body.testCases, // Replaces the entire array of test cases
+          },
+        },
+        { new: true }
+      );
+  
+      res.status(200).json(updatedProblem);
+    } catch (error) {
+      next(error);
+    }
+  };
+  

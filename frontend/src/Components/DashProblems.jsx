@@ -98,7 +98,13 @@ export default function DashProblems() {
                   <Table.Cell>
                     <Link className='font-medium text-gray-900 dark:text-white' to={`/problem/${problem.slug}`}>{problem.title}</Link>
                   </Table.Cell>
-                  <Table.Cell>{problem.difficulty}</Table.Cell>
+                  <Table.Cell  className={
+                      problem.difficulty === 'Easy' ? 'text-green-500' :
+                      problem.difficulty === 'Medium' ? 'text-yellow-300' :
+                      'text-red-500'
+                    }
+                    >
+                      {problem.difficulty}</Table.Cell>
                   <Table.Cell>{problem.category}</Table.Cell>
                   <Table.Cell>
                     <span onClick={() => {
@@ -134,7 +140,7 @@ export default function DashProblems() {
                     <h3 className='mb-5 text-lg text-gray-500 dark:text-gray-400 '>Are You Sure You Want to Delete This Problem?</h3>
                     <div className="flex justify-center gap-4">
                         <Button color='failure' onClick={handleDeleteProblem}>Yes I'm Sure</Button>
-                        <Button color='gray' onClick={handleDeleteProblem}>No, Cancel</Button>
+                        <Button color='gray' onClick={() => setShowModal(false)}>No, Cancel</Button>
                     </div>
                 </div>
             </Modal.Body>

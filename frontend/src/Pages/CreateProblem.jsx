@@ -81,9 +81,9 @@ export default function CreateProblem() {
           <Select id='difficulty' required
             onChange={(e) => setFormData({ ...formData, difficulty: e.target.value })}>
             <option value=''>Select Difficulty</option>
-            <option value='easy'>Easy</option>
-            <option value='medium'>Medium</option>
-            <option value='hard'>Hard</option>
+            <option value='Easy'>Easy</option>
+            <option value='Medium'>Medium</option>
+            <option value='Hard'>Hard</option>
           </Select>
 
           <Label htmlFor='category'>Category:</Label>
