@@ -9,10 +9,9 @@ const __dirname = path.dirname(__filename);
 
 const outputPath = path.join(__dirname, "outputs"); // Define the output folder
 
-// Ensure the outputs directory exists
 
 export const executeCpp = (filePath, inputFilePath) => {
-  if (!fs.existsSync(outputPath)) {
+  if (!fs.existsSync(outputPath)) {  // Ensure the outputs directory exists
     fs.mkdirSync(outputPath, { recursive: true });
   }
   

@@ -1,39 +1,45 @@
-import fs from 'fs'; // Use 'import' instead of 'require'
-import path from 'path'; // Use 'import' instead of 'require'
-import { exec } from 'child_process'; // Use 'import' instead of 'require'
+import { exec } from 'child_process';
+import path from 'path';
+import fs from 'fs';
 import { fileURLToPath } from 'url';
 
-// Use import.meta.url to get the current file path and directory
+// To simulate __dirname in ES module scope
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-// Output directory for compiled Go files
-const outputPath = path.join(__dirname, "outputs");
+const outputPath = path.join(__dirname, "outputs"); // Define the output folder
 
-// Create the output directory if it doesn't exist
-if (!fs.existsSync(outputPath)) {
-  fs.mkdirSync(outputPath);
-}
 
-export const executeJavaScript = async (filepath) => {
-    const jobId = path.basename(filepath).split(".")[0];
-    const outputFilename = `${jobId}.exe`;
-    const outPath = path.join(outputPath, outputFilename);  // D:\AlgoUOC\Backend\outputs\outputFilename
+export const executeJavaScript = (filePath, inputFilePath) => {
+  if (!fs.existsSync(outputPath)) {  // Ensure the outputs directory exists
+    fs.mkdirSync(outputPath, { recursive: true });
+  }
+  
+  const jobId = path.basename(filePath).split('.')[0]; // Extract jobId from file name
+  const outputFilePath = path.join(outputPath, `${jobId}.exe`); // Output file path
 
-    return new Promise((resolve, reject) => {
-        exec(
-          `node ${filepath} -o ${outPath} && cd ${outputPath} && .\\${outputFilename}`, 
-          (error, stdout, stderr) => {
-            if (error) {
-              reject (error);
-            }
-            if (stderr) {
-              reject (error);
-            }
-            resolve(stdout);
+
+  return new Promise((resolve, reject) => {
+    // Command to compile the C++ file
+    const compileCommand = `node ${filePath} -o ${outputFilePath}`;
+
+    exec(compileCommand, (compileError, stdout, stderr) => {
+      if (compileError) {
+        reject({ error: stderr });
+      } else {
+        // Command to execute the compiled file
+        const executeCommand = inputFilePath
+          ? `${outputFilePath} < ${inputFilePath}`
+          : `${outputFilePath}`;
+
+        exec(executeCommand, (executeError, executeStdout, executeStderr) => {
+          if (executeError) {
+            reject({ error: executeStderr });
+          } else {
+            resolve(executeStdout);
           }
-        )
-    })
-
+        });
+      }
+    });
+  });
 };
-

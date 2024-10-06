@@ -1,20 +1,34 @@
 import React, { useState } from "react";
 import CodeMirror from "@uiw/react-codemirror";
 import { cpp } from "@codemirror/lang-cpp";
+import { java } from "@codemirror/lang-java";
+import { python } from "@codemirror/lang-python";
+import { javascript } from "@codemirror/lang-javascript";
 import { okaidia } from "@uiw/codemirror-theme-okaidia"; // Okaidia theme
 import axios from "axios";
 import "../../index.css";
 
 const Compiler = () => {
-  const [code, setCode] = useState(`
-        #include <iostream>
-        using namespace std;
-        int main() {
-          cout << "Hello World!";
-          return 0; 
-        }
-          `);
+  // Boilerplate code for each language
+  const getBoilerplateCode = (lang) => {
+    switch (lang) {
+      case "cpp":
+        return `#include <iostream>\nusing namespace std;\nint main() {\n  cout << "Hello World!";\n  return 0;\n}`;
+      case "java":
+        return `public class Main {\n  public static void main(String[] args) {\n    System.out.println("Hello World!");\n  }\n}`;
+      case "py":
+        return `print("Hello World!")`;
+      case "js":
+        return `console.log("Hello World!");`;
+      case "go":
+        return `package main\nimport "fmt"\nfunc main() {\n  fmt.Println("Hello World!")\n}`;
+      default:
+        return `// Write your code here...`;
+    }
+  };
+
   const [language, setLanguage] = useState("cpp");
+  const [code, setCode] = useState(getBoilerplateCode(language));
   const [output, setOutput] = useState("");
   const [input, setInput] = useState(""); // New state for input
 
@@ -35,6 +49,12 @@ const Compiler = () => {
     }
   };
 
+  // Handle language change and update boilerplate code
+  const handleLanguageChange = (lang) => {
+    setLanguage(lang);
+    setCode(getBoilerplateCode(lang));
+  };
+
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-gray-100 dark:bg-gray-900">
       {/* Language Selection Dropdown */}
@@ -42,7 +62,7 @@ const Compiler = () => {
         <select
           className="w-full p-2 rounded border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-400 bg-white text-black dark:bg-gray-800 dark:border-gray-600 dark:text-white"
           value={language}
-          onChange={(e) => setLanguage(e.target.value)}
+          onChange={(e) => handleLanguageChange(e.target.value)} // Update language and code
         >
           <option value="cpp">C++</option>
           <option value="java">Java</option>
@@ -65,6 +85,8 @@ const Compiler = () => {
 
       {/* Input TextArea for user input */}
       <div className="w-full max-w-3xl mb-4">
+        <h1>Test against Custom Input</h1>
+        <br />
         <textarea
           className="w-full p-2 rounded border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-400 bg-white text-black dark:bg-gray-800 dark:border-gray-600 dark:text-white"
           rows="5"

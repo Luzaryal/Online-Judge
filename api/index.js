@@ -11,6 +11,9 @@ import problemRoutes from './routes/problem.route.js';
 import { generateFile } from '../Compiler/generateFile.js';
 import { executeCpp } from '../Compiler/executeCpp.js';
 import { executePython } from '../Compiler/executePython.js';
+import { executeJava } from '../Compiler/executeJava.js';
+import { executeGo } from '../Compiler/executeGo.js';
+import { executeJavaScript } from '../Compiler/executeJavaScript.js';
 // Add other execution functions as necessary
 
 dotenv.config();
@@ -46,6 +49,15 @@ app.post("/run", async (req, res) => {
                 break;
             case "py":
                 output = await executePython(filePath.codeFilePath, filePath.inputFilePath);
+                break;
+            case "java":
+                output = await executeJava(filePath.codeFilePath, filePath.inputFilePath);
+                break;
+            case "go":
+                output = await executeGo(filePath.codeFilePath, filePath.inputFilePath);
+                break;
+            case "javascript":
+                output = await executeJavaScript(filePath.codeFilePath, filePath.inputFilePath);
                 break;
             // Add more cases for other languages
             default:
