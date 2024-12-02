@@ -8,6 +8,8 @@ import cookieParser from 'cookie-parser';
 import userRoutes from './routes/user.route.js';
 import authRoutes from './routes/auth.route.js';
 import problemRoutes from './routes/problem.route.js';
+import testRoutes from './routes/test.route.js';
+
 import { generateFile } from '../Compiler/generateFile.js';
 import { executeCpp } from '../Compiler/executeCpp.js';
 import { executePython } from '../Compiler/executePython.js';
@@ -56,7 +58,7 @@ app.post("/run", async (req, res) => {
             case "go":
                 output = await executeGo(filePath.codeFilePath, filePath.inputFilePath);
                 break;
-            case "javascript":
+            case "js":
                 output = await executeJavaScript(filePath.codeFilePath, filePath.inputFilePath);
                 break;
             // Add more cases for other languages
@@ -74,6 +76,7 @@ app.post("/run", async (req, res) => {
 app.use('/api/user', userRoutes);
 app.use('/api/auth', authRoutes);
 app.use('/api/problem', problemRoutes);
+app.use('/api/test', testRoutes)
 
 // Error handling middleware
 app.use((err, req, res, next) => {

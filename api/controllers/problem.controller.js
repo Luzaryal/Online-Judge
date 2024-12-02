@@ -1,3 +1,4 @@
+
 import Problem from "../models/problem.model.js";
 import { errorHandler } from "../utils/error.js"
 
@@ -68,6 +69,20 @@ export const getProblems = async (req, res, next) => {
         next(error);
     }
 };
+
+export const getProblemById = async( req, res) => {
+    const { slug } = req.params;
+  try {
+        const problem = await Problem.findOne({slug});
+    if (!problem) {
+      return res.status(404).json({ message: "Problem not found" });
+    }
+    res.json(problem);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Error fetching problem" });
+  }
+}
 
 export const deleteproblem = async (req, res, next) => {
 
