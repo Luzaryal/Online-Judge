@@ -71,9 +71,9 @@ export const getProblems = async (req, res, next) => {
 };
 
 export const getProblemById = async( req, res) => {
-    const { slug } = req.params;
+    const { problemId } = req.params;
   try {
-        const problem = await Problem.findOne({slug});
+        const problem = await Problem.findOne({slug: problemId});
     if (!problem) {
       return res.status(404).json({ message: "Problem not found" });
     }

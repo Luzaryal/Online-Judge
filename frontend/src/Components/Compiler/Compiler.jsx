@@ -37,22 +37,21 @@ const Compiler = () => {
   const [output, setOutput] = useState("");
   const [input, setInput] = useState(""); // New state for input
   const [testCases, setTestCases] = useState([]); // State for test cases
+  const { problemSlug: slug } = useParams();
 
   // Fetch problem data including test cases
   useEffect(() => {
     const fetchProblemData = async () => {
-      const { slug } = useParams();
       try {
-        const response = await axios.get(`http://localhost:8080/problem/getproblem/${slug}`);
+        const response = await axios.get(`http://localhost:8080/api/problem/getproblem/${slug}`);
         setTestCases(response.data.testCases); // Extract test cases
-        console.log(testCases);
       } catch (error) {
         console.error("Error fetching problem data:", error);
       }
     };
 
     fetchProblemData();
-  }, []);
+  }, [slug]);
 
   // Handle code and input submission
   const handleRun = async () => {
@@ -144,7 +143,7 @@ const Compiler = () => {
 
       {/* Run Button */}
       <button
-        className="px-8 py-2 bg-blue-700 text-white font-semibold rounded hover:bg-blue-800 transition duration-200"
+        className="px-8 py-2 bg-blue-700 text-white font-semibold rounded hover:bg-blue-800 transition duration-200 mb-3"
         onClick={handleRun}
       >
         Run

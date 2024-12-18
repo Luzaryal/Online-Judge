@@ -2,6 +2,7 @@ import { Table } from 'flowbite-react';
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
+import './ProblemPage.css';
 
 export default function DashProblems() {
   const { currentUser } = useSelector((state) => state.user);

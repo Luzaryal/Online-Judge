@@ -1,0 +1,7 @@
+#resizableDiv1, #resizableDiv2 {
+    min-width: 50px; /* Prevent collapsing */
+  }
+  
+  #resizer {
+    cursor: col-resize; /* Horizontal resize cursor */
+  }
