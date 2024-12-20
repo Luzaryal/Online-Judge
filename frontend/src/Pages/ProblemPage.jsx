@@ -82,6 +82,10 @@ export default function ProblemPage() {
             {/* Problem Statement Section */}
         <section className='flex-1 border-r border-gray-300'>
                     <h1 className='text-3xl font-semibold mb-3 p-3'>{problem && problem.title}</h1>
+
+                    <div className='p-4 mb-4 text-gray-800 dark:text-white'>
+                        <p className='text-base'>{`Score: ${problem && problem.score} Points`}</p>
+                    </div>
                     
                     <div className='bg-white dark:bg-gray-800 p-4 shadow-md rounded-lg mb-4 text-gray-800 dark:text-white'>
                         <h2 className='text-xl font-semibold mb-2'>Description</h2>

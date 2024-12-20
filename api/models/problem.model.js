@@ -46,6 +46,10 @@ const problemSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
+    score: {
+        type: Number,
+        required: true,
+    },
     // Remove old input/output fields and replace them with an array of test cases
     testCases: [testCaseSchema],  // Array of test cases
     slug: {

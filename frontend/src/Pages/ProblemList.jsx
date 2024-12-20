@@ -7,7 +7,7 @@ import './ProblemPage.css';
 export default function DashProblems() {
   const { currentUser } = useSelector((state) => state.user);
   const [userProblems, setUserProblems] = useState([]);
-  const [showMore, setShowMore] = useState(true);
+  const [displayedProblemsCount, setDisplayedProblemsCount] = useState(0);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -18,9 +18,7 @@ export default function DashProblems() {
 
         if (res.ok) {
           setUserProblems(data.problems);
-          if (data.problems.length < 9) {
-            setShowMore(false);
-          }
+          setDisplayedProblemsCount(data.problems.length < 9 ? data.problems.length : 9);
         }
       } catch (error) {
         console.log(error.message);
@@ -31,18 +29,10 @@ export default function DashProblems() {
   }, []);
 
   const handleShowMore = async () => {
-    const startIndex = userProblems.length;
-    try {
-      const res = await fetch(`/api/problem/getproblems?startIndex=${startIndex}`);
-      const data = await res.json();
-      if (res.ok) {
-        setUserProblems((prev) => [...prev, ...data.problems]);
-        if (data.problems.length < 9) {
-          setShowMore(false);
-        }
-      }
-    } catch (error) {
-      console.log(error.message);
+    if (displayedProblemsCount + 9 < userProblems.length) {
+      setDisplayedProblemsCount(displayedProblemsCount + 9);
+    } else {
+      setDisplayedProblemsCount(userProblems.length);
     }
   };
 
@@ -65,7 +55,7 @@ export default function DashProblems() {
               <Table.HeadCell>Difficulty</Table.HeadCell>
               <Table.HeadCell>Category</Table.HeadCell>
             </Table.Head>
-            {userProblems.map((problem) => (
+            {userProblems.slice(0, displayedProblemsCount).map((problem) => (
               <Table.Body className='divide-y' key={problem.slug}>
                 <Table.Row className='bg-white dark:border-gray-700 dark:bg-gray-800'>
                   <Table.Cell>{new Date(problem.updatedAt).toLocaleDateString()}</Table.Cell>
@@ -92,7 +82,7 @@ export default function DashProblems() {
               </Table.Body>
             ))}
           </Table>
-          {showMore && (
+          {displayedProblemsCount < userProblems?.length && (
             <button onClick={handleShowMore} className='w-full text-teal-500 self-center text-sm py-7'>
               Show More
             </button>

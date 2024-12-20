@@ -12,6 +12,8 @@ export const create = async (req, res, next) => {
     //     return next(errorHandler(400, 'Please Provide All The Fields'));
     // }
     const slug = req.body.title.split(' ').join('-').toLowerCase().replace(/[^a-zA-Z0-9-]/g, '');
+
+    console.log(req.body);
    
     try {
         const newProblem = new Problem({
@@ -29,7 +31,6 @@ export const create = async (req, res, next) => {
 export const getProblems = async (req, res, next) => {
     try {
         const startIndex = parseInt(req.query.startIndex) || 0;
-        const limit = parseInt(req.query.limit) || 9;
         const sortDirection = req.query.order === 'asc' ? 1 : -1;
         const problems = await Problem.find({
             ...(req.query.userId && {userId: req.query.userId}),
@@ -43,7 +44,7 @@ export const getProblems = async (req, res, next) => {
                 ]
             }),
 
-        }).sort({updatedAt: sortDirection}).skip(startIndex).limit(limit);
+        }).sort({updatedAt: sortDirection}).skip(startIndex);
 
         const totalProblems = await Problem.countDocuments();
 

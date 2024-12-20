@@ -90,6 +90,10 @@ export default function CreateProblem() {
           <Textarea id='category' rows={1} required placeholder='Category'
             onChange={(e) => setFormData({ ...formData, category: e.target.value })}
           />
+          <Label htmlFor='score'>Score:</Label>
+          <Textarea id='score' rows={1} required placeholder='Score'
+            onChange={(e) => setFormData({ ...formData, score: +e.target.value })}
+          />
           <Label htmlFor='description'>Description:</Label>
           <Textarea id='description' rows={8} required placeholder='Description'
             onChange={(e) => setFormData({ ...formData, description: e.target.value })}

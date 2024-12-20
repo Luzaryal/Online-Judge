@@ -13,6 +13,7 @@ import { Link } from 'react-router-dom';
 export default function DashProfile() {
     const { currentUser, error, loading } = useSelector((state) => state.user);
     const [imageFile, setImageFile] = useState(null);
+    const [userProblems, setUserProblems] = useState([]);
     const [imageFileUrl, setImageFileUrl] = useState(null);
     const [imageFileUploadProgress, setImageFileUploadProgress] = useState(null);
     const [imageFileUploadError, setImageFileUploadError] = useState(null);
@@ -21,6 +22,7 @@ export default function DashProfile() {
     const [updateUserError, setUpdateUserError] = useState(null);
     const [showModal, setShowModal] = useState(false);
     const [formData, setFormData] = useState({});
+    const [totalScore, setTotalScore] = useState(0);
     const filePickerRef = useRef();
     const dispatch = useDispatch();
     const handleImageChange = (e) => {
@@ -35,6 +37,33 @@ export default function DashProfile() {
             uploadImage();
         }
     }, [imageFile]);
+
+    useEffect(() => {
+        if (Array.isArray(userProblems) && currentUser && currentUser.solvedProblems) {
+            const userSolvedProblems = userProblems.filter(problem => currentUser.solvedProblems.some(solvedProblemId => solvedProblemId === problem._id));
+            console.log(userSolvedProblems);
+            setTotalScore(userSolvedProblems.reduce((currentTotalScore, problem) => problem.score + currentTotalScore, 0));
+        } 
+    }, [currentUser, userProblems]);
+
+    useEffect(() => {
+        const fetchProblems = async () => {
+          try {
+            const res = await fetch(`/api/problem/getproblems`);
+            const data = await res.json();
+    
+            if (res.ok) {
+              setUserProblems(data.problems);
+            }
+          } catch (error) {
+            console.log(error.message);
+          }
+        };
+    
+        fetchProblems();
+      }, []);
+
+      useEffect(() => console.log(userProblems), [userProblems])
     const uploadImage = async () => {  
         setImageFileUploading(true); 
         setImageFileUploadError(null);
