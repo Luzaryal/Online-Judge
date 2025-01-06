@@ -40,11 +40,17 @@ export default function DashProfile() {
 
     useEffect(() => {
         if (Array.isArray(userProblems) && currentUser && currentUser.solvedProblems) {
-            const userSolvedProblems = userProblems.filter(problem => currentUser.solvedProblems.some(solvedProblemId => solvedProblemId === problem._id));
+            console.log(currentUser);
+            console.log(currentUser.solvedProblems);
+            const userSolvedProblems = userProblems.filter(problem => currentUser.solvedProblems.some(solvedProblemSlug => solvedProblemSlug === problem.slug));
             console.log(userSolvedProblems);
             setTotalScore(userSolvedProblems.reduce((currentTotalScore, problem) => problem.score + currentTotalScore, 0));
         } 
     }, [currentUser, userProblems]);
+
+    useEffect(() => {
+        console.log(totalScore);
+    }, [totalScore]);
 
     useEffect(() => {
         const fetchProblems = async () => {

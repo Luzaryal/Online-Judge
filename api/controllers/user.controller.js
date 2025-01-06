@@ -72,3 +72,12 @@ export const signout = (req, res, next) => {
         next(error);
     }
 }
+
+export const solveProblem = async (req, res, next) => {
+    try {
+        await User.updateOne({ _id: req.params.userId }, { $push: { solvedProblems: req.body.problemSlug }});
+        res.status(200).json('Problem is solved!');
+    } catch (error) {
+        next(error);
+    }
+}

@@ -23,6 +23,10 @@ const userSchema = new mongoose.Schema({
         type: Boolean, 
         default: false,
     },
+    solvedProblems: {
+        type: [String],
+        default: []
+    },
     }, {timestamps: true}
 );
 

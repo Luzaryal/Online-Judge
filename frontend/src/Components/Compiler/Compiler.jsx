@@ -88,6 +88,16 @@ const Compiler = () => {
         }
       }
       alert("All test cases passed!");
+      // await fetch(`http://localhost:8080/api/user/solveProblem/${currentUser._id}`, {problemSlug: slug});
+      await fetch(`http://localhost:8080/api/user/solveProblem/${currentUser._id}`, {
+        method: 'PUT', // or 'POST', 'PUT', 'DELETE', etc.
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          problemSlug: slug
+        })
+      });
     } catch (error) {
       console.error("Error submitting the code:", error);
     }
