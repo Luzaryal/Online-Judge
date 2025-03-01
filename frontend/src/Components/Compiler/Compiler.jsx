@@ -71,6 +71,7 @@ const Compiler = () => {
   };
   const handleSubmit = async () =>{
     try {
+      console.log(testCases);
       for (const testCase of testCases) {
         const payload = {
           language,

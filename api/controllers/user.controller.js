@@ -47,7 +47,7 @@ export const updateUser = async (req, res, next) => {
             const { password, ...rest } = updatedUser._doc;
             res.status(200).json(rest);
         } catch (error) {
-            next(400);
+            next(error);
         }
 };
 
@@ -75,9 +75,12 @@ export const signout = (req, res, next) => {
 
 export const solveProblem = async (req, res, next) => {
     try {
-        await User.updateOne({ _id: req.params.userId }, { $push: { solvedProblems: req.body.problemSlug }});
+        await User.updateOne(
+            { _id: req.params.userId },
+            { $addToSet: { solvedProblems: req.body.problemSlug } }
+        );
         res.status(200).json('Problem is solved!');
     } catch (error) {
         next(error);
     }
-}
+};

@@ -9,6 +9,7 @@ import userRoutes from './routes/user.route.js';
 import authRoutes from './routes/auth.route.js';
 import problemRoutes from './routes/problem.route.js';
 import testRoutes from './routes/test.route.js';
+import leaderboardRoutes from './routes/leaderboard.route.js';
 
 import { generateFile } from '../Compiler/generateFile.js';
 import { executeCpp } from '../Compiler/executeCpp.js';
@@ -20,7 +21,7 @@ import { executeJavaScript } from '../Compiler/executeJavaScript.js';
 
 dotenv.config();
 
-const PORT = 8080; 
+const PORT = 8080;
 const app = express();
 
 mongoose.connect(process.env.MONGO)
@@ -42,12 +43,14 @@ app.post("/run", async (req, res) => {
     }
 
     try {
+        console.log(language, code, input);
         const filePath = generateFile(language, code, input); // Generate file
         let output;
 
         switch (language) {
             case "cpp":
                 output = await executeCpp(filePath.codeFilePath, filePath.inputFilePath);  // Pass input if available
+                console.log(output);
                 break;
             case "py":
                 output = await executePython(filePath.codeFilePath, filePath.inputFilePath);
@@ -77,6 +80,7 @@ app.use('/api/user', userRoutes);
 app.use('/api/auth', authRoutes);
 app.use('/api/problem', problemRoutes);
 app.use('/api/test', testRoutes)
+app.use('/api/leaderboard', leaderboardRoutes);
 
 // Error handling middleware
 app.use((err, req, res, next) => {
